@@ -5,12 +5,16 @@ export const category: Category[] = [
     },
     {
     id: 2,
-    name: "Dresss",
+    name: "Dress",
     },
     {
     id: 3,
     name: "Sepatu",
     },
+    {
+    id: 4,
+    name: "Celana"
+    }
     ]
     export interface Category {
     id? : number,
