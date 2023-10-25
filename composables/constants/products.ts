@@ -60,7 +60,7 @@ export const products = [
     price: 18,
     image: "/images/product7.jpg",
     isCart: false,
-    description: "Sepatu kolaborasi ventelashoes x jeromepolin dengan nama Konnijiwa.Insole terbuat dari Ultralite Foam menjadikan Ventela sangat empuk dan nyaman dipakai dan pada strip bisa menyala pada kegelapan",
+    description: "Sepatu kolaborasi ventela x jeromepolin dengan nama Konnijiwa.Insole terbuat dari Ultralite Foam menjadikan Ventela sangat empuk dan nyaman dipakai dan pada strip bisa menyala pada kegelapan",
   },
   {
     id: 8,
