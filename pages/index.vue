@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style scoped>
-/* Gaya CSS untuk kompommmnen home.vue */
+/* Gaya CSS untuk kompommnen home.vue */
 .home {
   display: flex;
   justify-content: center;
