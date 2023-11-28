@@ -1,8 +1,8 @@
 <template>
   <div class="home">
     <div class="hero">
-      <h1 class="hero-title">WELCOME {{ storeName }}</h1>
-      <p class="hero-description">Temukan Outfit of The Day keren kalian.</p>
+      <h1 class="hero-title">Welcome {{ storeName }}</h1>
+      <p class="hero-description">Ciptakan Suasana Natal yang Tak Terlupakan</p>
       <NuxtLink to="/product" class="text-base">
         <button class="hero-button">Lihat Produk</button>
       </NuxtLink>

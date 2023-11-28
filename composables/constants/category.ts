@@ -8,7 +8,7 @@ export const category: Category[] = [
     name: "Dress",
     },
     {
-    id: 3,
+    id: 6,
     name: "Sepatu",
     },
     {
