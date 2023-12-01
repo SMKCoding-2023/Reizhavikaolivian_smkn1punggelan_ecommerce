@@ -126,7 +126,7 @@ export const products = [
     description: "Ayo meriahkan dengan topi santa yang ikonik natal ini.",
   },
     {
-    id: 16,
+    id: 27,
     name: "gift box natal",
     category: "makanan",
     price: 35,

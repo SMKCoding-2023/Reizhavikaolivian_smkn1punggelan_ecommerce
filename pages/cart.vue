@@ -1,79 +1,101 @@
-<script lang="ts" setup>
-import type { Products } from "~/types/products";
-definePageMeta({
-middleware: ["user-access"]
-});
-const products = ref<Products[]>([]);
-const totalPrice = computed(() => {
-  return products.value
-    .filter((product) => product.price !== undefined)
-    .reduce(
-      (accumulator, currentValue) => accumulator + currentValue.price!,
-      0
-    );
-});
-onMounted(() => {
-  let localStorageData = localStorage.getItem("products");
-  if (localStorageData) {
-    products.value = JSON.parse(localStorageData);
-  }
-});
-const removeCart = (id: number) => {
-  products.value = products.value.filter((item) => item.id !== id);
-  localStorage.setItem("products", JSON.stringify(products.value));
-};
-</script>
-
 <template>
-  <section>
-    <div class="container">
-      <div class="py-10 flex gap-6">
-        <div class="w-[70%]">
-          <div
-            class="flex justify-between items-center pb-7 border-b border-gray- 300 mb-6"
-          >
-            <h1 class="text-3xl font-medium">Shopping Cart</h1>
-            <p class="text-3xl font-medium">{{ products.length }} Items</p>
-          </div>
-          <div v-if="products.length > 0" class="flex flex-col gap-6">
-            <template v-for="(item, index) in products" :key="index">
-              <CardsCardCart :product="item" @removeCart="removeCart" />
-            </template>
-          </div>
-          <div v-else>
-            <h5 class="text-xl font-light text-center">Cart is empty</h5>
-          </div>
-        </div>
-        <div class="w-[30%] bg-white shadow-xl h-max p-6">
-          <h3 class="text-xl font-medium mb-6">Order Summary</h3>
-          <div class="flex flex-col gap-3 border-b border-gray-300 pb-4">
-            <div v-if="products.length > 0">
-              <div
-                v-for="(item, index) in products"
-                :key="index"
-                class="flex gap-4 items-center"
-              >
-                <span class="text-limit limit-1 text-sm">{{ item.name }}</span>
-                <span class="text-sm font-semibold">${{ item.price }}</span>
-              </div>
-            </div>
-            <div v-else>
-              <p class="text-sm text-center font-light">
-                There are no to orders yet
-              </p>
+  <div class="container mx-auto my-8">
+    <div v-if="cartItems.length === 0" class="text-center">
+      <p>Your cart is empty</p>
+    </div>
+    <div v-else>
+      <div v-for="product in cartItems" :key="product.id" class="mb-4">
+        <div
+          class="bg-white shadow-md p-4 rounded-md flex items-center justify-between"
+        >
+          <div class="flex items-center space-x-4">
+            <img
+              :src="product.image"
+              alt="Product Image"
+              class="h-16 w-16 object-cover rounded-md"
+            />
+            <div>
+              <h3 class="text-lg font-semibold">{{ product.name }}</h3>
+              <p class="text-gray-600">${{ product.price.toFixed(2) }}</p>
             </div>
           </div>
-          <div class="pt-4 flex items-center justify-between mb-6">
-            <span class="text-base">Total</span>
-            <span class="text-base font-bold">${{ totalPrice }}</span>
+
+          <div v-if="product.discount">
+            <p class="text-red-500">{{ product.discount }}% OFF</p>
           </div>
-          <button
-            class="bg-blue-600 text-white text-base font-bold w-full py-2 rounded-lg"
-          >
-            Checkout
+
+          <div class="flex items-center space-x-2">
+            <button
+              @click="decrementQuantity(product.id)"
+              class="text-gray-500"
+            >
+              &minus;
+            </button>
+            <span class="text-lg">{{ product.quantity }}</span>
+            <button
+              @click="incrementQuantity(product.id)"
+              class="text-gray-500"
+            >
+              &plus;
+            </button>
+          </div>
+
+          <button @click="removeFromCart(product.id)" class="text-red-500">
+            <i class="ri-delete-bin-7-fill text-lg"></i>
           </button>
         </div>
       </div>
+
+      <div class="text-right mt-4">
+        <p class="text-xl font-semibold">
+          Total Price: ${{ calculateTotalPriceWithDiscount() }}
+        </p>
+      </div>
     </div>
-  </section>
+  </div>
 </template>
+
+<script setup>
+import { ref } from "vue";
+
+const cartItems = ref([
+  {
+    id: 16,
+    name: "gift box natal",
+    price: 35,
+    quantity: 1,
+    discount: 10,
+    image: "/images/product17.jpg",
+  },
+]);
+
+const calculateTotalPriceWithDiscount = () => {
+  return cartItems.value
+    .reduce((total, product) => {
+      const discountedPrice =
+        (1 - product.discount / 100) * product.price * product.quantity;
+      return total + discountedPrice;
+    }, 0)
+    .toFixed(2);
+};
+
+const removeFromCart = (id) => {
+  cartItems.value = cartItems.value.filter((item) => item.id !== id);
+};
+
+const incrementQuantity = (id) => {
+  const product = cartItems.value.find((item) => item.id === id);
+  if (product) {
+    product.quantity++;
+  }
+};
+
+const decrementQuantity = (id) => {
+  const product = cartItems.value.find((item) => item.id === id);
+  if (product && product.quantity > 1) {
+    product.quantity--;
+  }
+};
+</script>
+
+<style scoped></style>
